@@ -3,7 +3,6 @@
 #### This is an animated flip button widget created for toggling between two different values.
 *  *  *  *  *
 
-[![pub dev](https://img.shields.io/pub/v/bouncing_character.svg)](https://pub.dartlang.org/packages/bouncing_character)
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
