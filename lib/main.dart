@@ -19,6 +19,9 @@ class FlipHome extends StatelessWidget {
             background: const Color(0xFF333333),
             leftLabel: 'Free',
             rightLabel: 'Premium',
+            onChange: (bool isLeftActive) {
+              //Switch between tabs or do whatever you want to do.
+            },
           ),
         ),
       ),
@@ -31,9 +34,15 @@ class FlippingButton extends StatefulWidget {
   final Color background;
   final String leftLabel;
   final String rightLabel;
+  final void Function(bool isLeftActive) onChange;
 
   const FlippingButton(
-      {Key key, this.color, this.background, this.leftLabel, this.rightLabel})
+      {Key key,
+      this.color,
+      this.background,
+      this.leftLabel,
+      this.rightLabel,
+      this.onChange})
       : super(key: key);
 
   @override
@@ -69,8 +78,11 @@ class _FlippingButtonState extends State<FlippingButton>
   void _switchState() {
     if (_flipController.isCompleted) {
       _flipController.reverse();
+
+      widget.onChange?.call(false);
     } else {
       _flipController.forward();
+      widget.onChange?.call(true);
     }
   }
 
@@ -86,39 +98,42 @@ class _FlippingButtonState extends State<FlippingButton>
     ]);
   }
 
-  Container _buildBtnBackground() {
-    return Container(
-      width: 250,
-      height: 64,
-      decoration: BoxDecoration(
-          color: widget.background,
-          borderRadius: BorderRadius.circular(32),
-          border: Border.all(width: 5, color: widget.color)),
-      child: Row(
-        children: [
-          Expanded(
-            child: Center(
-              child: Text(
-                widget.leftLabel,
-                style: TextStyle(
-                    color: widget.color,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
+  Widget _buildBtnBackground() {
+    return GestureDetector(
+      onTap: _switchState,
+      child: Container(
+        width: 250,
+        height: 64,
+        decoration: BoxDecoration(
+            color: widget.background,
+            borderRadius: BorderRadius.circular(32),
+            border: Border.all(width: 5, color: widget.color)),
+        child: Row(
+          children: [
+            Expanded(
+              child: Center(
+                child: Text(
+                  widget.leftLabel,
+                  style: TextStyle(
+                      color: widget.color,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: Center(
-              child: Text(
-                widget.rightLabel,
-                style: TextStyle(
-                    color: widget.color,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
+            Expanded(
+              child: Center(
+                child: Text(
+                  widget.rightLabel,
+                  style: TextStyle(
+                      color: widget.color,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
